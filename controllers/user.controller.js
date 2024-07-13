@@ -54,4 +54,9 @@ let getProfile = async (req, res) => {
   res.status(200).json({ message: "get profile success", user });
 };
 
-module.exports = { register, login, getProfile };
+let getAllUser = async (req, res) => {
+  let users = await userService.getAllUser();
+  res.status(200).json({ message: "get all user success", users });
+};
+
+module.exports = { register, login, getProfile, getAllUser };

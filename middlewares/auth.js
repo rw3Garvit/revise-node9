@@ -5,22 +5,23 @@ let createToken = (data) => {
   return token;
 };
 
-let isLogin = (req, res, next) => {
+let isLogin = ([...role]) => {
   try {
-    // console.log(req);
+   
+    return (req, res, next) => {
+      let token = req.cookies["token"];
+      let user = jwt.verify(token, process.env.SECRET);
 
-    let token = req.cookies["token"];
-    if (!token) {
-      throw new Error("you are not login");
-    }
+      console.log(user.user.role);
 
-    let user = jwt.verify(token, process.env.SECRET);
-
-    req.user = user;
-    next();
-
+      if (!role.includes(user.user.role)) {
+        throw new Error("you are unauthorised");
+      }
+      req.user = user;
+      next();
+    };
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 

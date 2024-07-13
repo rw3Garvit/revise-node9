@@ -8,4 +8,8 @@ let findByEmail = (email) => {
   return userSchema.findOne({ email });
 };
 
-module.exports = { register, findByEmail };
+let getAllUser = () => {
+  return userSchema.find();
+};
+
+module.exports = { register, findByEmail, getAllUser };
