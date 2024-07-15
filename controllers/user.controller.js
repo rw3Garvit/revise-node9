@@ -1,16 +1,19 @@
 const { createToken } = require("../middlewares/auth");
 const { userService } = require("../services");
+const uploadImage = require("../services/cloudnary.service");
 
 let register = async (req, res) => {
   console.log(req.body);
   console.log(req.file);
 
   let body = req.body;
-  let { path } = req.file;
+  let { path, originalname } = req.file;
+
+  let cloud = await uploadImage(path, originalname);
 
   let newBody = {
     ...body,
-    profile: path,
+    profile: cloud.url,
   };
 
   let user = await userService.register(newBody);
